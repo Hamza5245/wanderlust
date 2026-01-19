@@ -1,0 +1,61 @@
+services:
+  # 1. Database
+  mongodb:
+    image: mongo:latest
+    container_name: wanderlust_db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - wanderlust_network
+
+  # 2. Redis
+  redis:
+    image: redis:alpine
+    container_name: wanderlust_redis
+    restart: always
+    networks:
+      - wanderlust_network
+
+  # 3. Backend
+  backend:
+    build: ./backend
+    container_name: wanderlust_backend
+    restart: always
+    ports:
+      - "8002:8002"
+    env_file:
+      - ./backend/.env
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/wanderlust
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - wanderlust_network
+
+  # 4. Frontend
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Build ke waqt backend ka external URL dena zaroori hai
+        - VITE_API_URL=http://175.168.1.62:8002
+    container_name: wanderlust_frontend
+    restart: always
+    ports:
+      - "8088:8088"
+    depends_on:
+      - backend
+    networks:
+      - wanderlust_network
+
+networks:
+  wanderlust_network:
+    driver: bridge
+
+volumes:
+  mongo_data:

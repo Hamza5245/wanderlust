@@ -1,0 +1,42 @@
+services:
+  # 1. MongoDB Service
+  mongodb:
+    image: mongo:latest
+    container_name: wanderlust_db
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - wanderlust_network
+    # Production mein ports hataye ja sakte hain taake bahar se koi access na kare
+    ports:
+      - "27017:27017"
+
+  # 2. Redis Service
+  redis:
+    image: redis:alpine
+    container_name: wanderlust_redis
+    networks:
+      - wanderlust_network
+
+  # 3. Backend Service
+  backend:
+    build: .
+    container_name: wanderlust_backend
+    ports:
+      - "8002:8002"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/wanderlust
+      - REDIS_URL=redis://redis:6379
+      - PORT=8002
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - wanderlust_network
+
+# Networks Definition
+networks:
+  wanderlust_network:
+volumes:
+  mongo_data:
