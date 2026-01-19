@@ -40,8 +40,7 @@ services:
     build:
       context: ./frontend
       args:
-        # Build ke waqt backend ka external URL dena zaroori hai
-        - VITE_API_URL=http://175.168.1.62:8002
+        - VITE_API_PATH=${VITE_API_PATH}
     container_name: wanderlust_frontend
     restart: always
     ports:

@@ -3,8 +3,8 @@ FROM node:18-alpine AS build-stage
 WORKDIR /app
 
 # Environment variable define karein (Vite ke liye VITE_ prefix lazmi hai)
-ARG VITE_API_URL=http://175.168.1.62:8002
-ENV VITE_API_URL=$VITE_API_URL
+ARG VITE_API_PATH
+ENV VITE_API_PATH=$VITE_API_PAT
 COPY package*.json ./
 RUN npm install
 COPY . .
