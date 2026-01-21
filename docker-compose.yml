@@ -27,8 +27,8 @@ services:
     ports:
       - "8002:8002"
     environment:
-      - MONGODB_URI=mongodb://mongodb:27017/wanderlust
-      - REDIS_URL=redis://redis:6379
+      - MONGODB_URI=$ {MONGODB_URI}
+      - REDIS_URL=$ {REDIS_URL}
     depends_on:
       - mongodb
       - redis
