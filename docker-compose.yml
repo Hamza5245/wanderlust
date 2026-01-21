@@ -27,8 +27,8 @@ services:
     ports:
       - "8002:8002"
     environment:
-      - MONGODB_URI=$ {MONGODB_URI}
-      - REDIS_URL=$ {REDIS_URL}
+      - MONGODB_URI=${MONGODB_URI}
+      - REDIS_URL=${REDIS_URL}
     depends_on:
       - mongodb
       - redis
