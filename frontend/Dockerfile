@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Sahi spelling: VITE_API_PATH
 ARG VITE_API_PATH
-ENV VITE_API_PATH=$VITE_API_PATH
+ENV VITE_API_PATH=${VITE_API_PATH}
 
 COPY package*.json ./
 RUN npm install
